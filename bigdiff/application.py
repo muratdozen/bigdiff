@@ -120,24 +120,29 @@ def diff_two_bucket_files(bucket1_filename, bucket2_filename):
 
 
 def diff_all_buckets(dirpath):
+    """
+    Traverses all bucket files created in the temporary directory,
+    compares each bucket file of File1 to the corresponding bucket file of
+    File 2. Each comparison of buckets results in a partial diff which
+    are then gathered into a resulting diff set.
+    """
     logging.info("Reading bucket files to compute the diff of hashes.")
     bucket1_filenames, bucket2_filenames = get_bucket_filenames(dirpath)
     resulting_diff_left, resulting_diff_right = set(), set()
     i, j = 0, 0
     while i < len(bucket1_filenames) and j < len(bucket2_filenames):
-        bucket1_filename, bucket2_filename = bucket1_filenames[
-            i], bucket2_filenames[j]
-        bucket1_filename_basepath = os.path.basename(bucket1_filename)
-        bucket2_filename_basepath = os.path.basename(bucket2_filename)
-        if bucket1_filename_basepath == bucket2_filename_basepath:
+        bucket1_filename = bucket1_filenames[i]
+        bucket2_filename = bucket2_filenames[j]
+        bucket1_filename_basename = os.path.basename(bucket1_filename)
+        bucket2_filename_basename = os.path.basename(bucket2_filename)
+        if bucket1_filename_basename == bucket2_filename_basename:
             diff_left, diff_right = diff_two_bucket_files(
                 bucket1_filename, bucket2_filename)
             resulting_diff_left.update(diff_left)
             resulting_diff_right.update(diff_right)
-            i += 1
-            j += 1
+            i, j = i + 1, j + 1
         else:
-            if bucket1_filename_basepath < bucket2_filename_basepath:
+            if bucket1_filename_basename < bucket2_filename_basename:
                 bucket1_lines = read_gzip_file_lines_into_int_set(
                     bucket1_filename)
                 resulting_diff_left.update(bucket1_lines)
@@ -147,6 +152,8 @@ def diff_all_buckets(dirpath):
                     bucket2_filename)
                 resulting_diff_right.update(bucket2_lines)
                 j += 1
+
+    # traverse the left-overs
     while i < len(bucket1_filenames):
         bucket1_filename = bucket1_filenames[i]
         lines = read_gzip_file_lines_into_int_set(bucket1_filename)
