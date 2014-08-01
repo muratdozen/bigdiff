@@ -173,8 +173,3 @@ if __name__ == "__main__":
     logging.basicConfig(
         format='%(levelname)s: %(message)s', level=logging.DEBUG)
     test()
-
-
-TODO = """
-2 github a koy + wiki yaz
-"""
