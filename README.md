@@ -44,4 +44,6 @@ Disk Space Usage
 ----
 Bigdiff creates temporary files whose sizes are linear in the size of the input. If the average length of lines in the inputs is more than 11 characters, spare free disk space equal to the total size of the two gzipped input files.  If not, expect a higher disk space usage.
 
+---
+
 Authored by Murat Derya Özen
