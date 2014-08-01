@@ -13,7 +13,7 @@ import application
 # This directory is used for tests.
 # It should be an absolute path and should exist
 # and contain no items inside.
-EMPTY_TEST_DIR = "/Users/murat/Desktop/bigdiff/test/"
+EMPTY_TEST_DIR = "/Users/murat/Documents/code/git/bigdiff/dummytestdir/"
 test_case_ctr = 0
 
 
